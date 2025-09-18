@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from app import models
+from app.database import engine
 from app.routes import offer, leads
 
 app = FastAPI(
@@ -7,7 +9,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Register routes
 app.include_router(offer.router, tags=["Offers"])
 app.include_router(leads.router, tags=["Leads"])
 
