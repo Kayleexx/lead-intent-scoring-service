@@ -1,7 +1,13 @@
 from fastapi import FastAPI
-from app import models
-from app.database import engine
-from app.routes import offer, leads
+from app.database import engine, Base
+import app.models  # Import models so tables are registered
+from app.routes import leads
+from dotenv import load_dotenv
+load_dotenv()
+
+
+# Create all tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Lead Intent Scoring Service",
@@ -9,7 +15,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.include_router(offer.router, tags=["Offers"])
+# Register routes
 app.include_router(leads.router, tags=["Leads"])
 
 @app.get("/")
